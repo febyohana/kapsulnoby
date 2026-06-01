@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Capsule Noby</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <h1><b>Capsule Noby💊</b></h1>
+      <p>Walaupun kita jauh, ingat presiden kita tetap <b>PRABOWO</b></p>
+
+      <div class="countdown-box">
+        <h2>Countdown Ketemu 💖</h2>
+        <div id="countdown"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LETTER -->
+  <section class="section">
+    <h2><b>💌 Emergency Letters</b></h2>
+
+    <div class="cards">
+      <div class="card" onclick="openLetter('capek')">
+        Buka Saat Capek 😣
+      </div>
+
+      <div class="card" onclick="openLetter('kangen')">
+        Buka Saat Kangen 🥹
+      </div>
+
+      <div class="card" onclick="openLetter('sedih')">
+        Buka Saat Sedih 🤍
+      </div>
+    </div>
+
+    <div id="letter-popup" class="popup hidden">
+      <div class="popup-content">
+        <span class="close" onclick="closePopup()">&times;</span>
+        <p id="letter-text"></p>
+      </div>
+    </div>
+  </section>
+<hr>
+  <!-- CALENDAR -->
+<section class="section">
+
+  <h2>🎞️ Memories Calendar</h2>
+  <p>Tempat nyimpen cerita setiap kita ketemu 🤍, Pastikan input valid karena tidak ada delete di history kita</p>
+
+  <div class="memory-form">
+
+    <p>
+      <input
+        type="date"
+        id="memoryDate">
+    </p>
+
+    <br>
+
+    <p>
+      <input
+        type="text"
+        id="memoryTitle"
+        placeholder="Judul memory (contoh: Date pertama)">
+    </p>
+
+    <br>
+
+    <p>
+      <textarea
+        id="memoryText"
+        placeholder="Hari ini kita ngapain aja?🥹"></textarea>
+    </p>
+
+    <button onclick="saveMemory()">
+      Simpan Kenangan✨
+    </button>
+
+  </div>
+
+  <div
+    class="memory-calendar"
+    id="memoryCalendar">
+  </div>
+
+</section>
+<hr>
+  <!-- Secret Calendar -->
+  <section class="section">
+      <h2><b>📆 Secret Calendar</b></h2>
+  <p>
+    Kirim pesan yang hanya bisa dibuka
+    di waktu tertentu 🤍
+  </p>
+
+  <div class="calendar-container">
+
+    <!-- FORM -->
+    <div class="calendar-form">
+
+     <input
+        type="text"
+        id="title"
+        placeholder="Untuk Babik/Buy..."
+      >
+
+<p>
+      <textarea
+        id="message"
+        placeholder="Tulis pesan..."
+      ></textarea>
+</p>
+<p>
+      <p>
+        Waktu pesan dibuka
+      </p>
+</p>
+      <input
+        type="datetime-local"
+        id="unlockTime"
+      >
+
+      <button type="button" onclick="saveMessage()">
+        Simpan Pesan✨
+      </button>
+    </div> <br> </section>
+<section class="scheduled-section">
+
+  <!-- FILTER -->
+  <div class="filter-box">
+
+<select id="filterMonth">
+  <option value="">Semua Bulan</option>
+  <option value="0">Januari</option>
+  <option value="1">Februari</option>
+  <option value="2">Maret</option>
+  <option value="3">April</option>
+  <option value="4">Mei</option>
+  <option value="5">Juni</option>
+  <option value="6">Juli</option>
+  <option value="7">Agustus</option>
+  <option value="8">September</option>
+  <option value="9">Oktober</option>
+  <option value="10">November</option>
+  <option value="11">Desember</option>
+</select>
+
+  <select id="filterYear">
+    <option value="">Semua Tahun</option>
+  </select>
+</div>
+
+  <!-- TITLE -->
+  <div class="scheduled-title">
+    <h2>💌 Pesan Terjadwal</h2>
+    <p>
+      Pesan masih terkunci sampai waktu yang ditentukan
+    </p>
+  </div>
+
+  <!-- MESSAGE -->
+  <div class="calendar-messages">
+    <div id="messagesList"></div>
+  </div>
+
+</section>
+
+  <!-- Mission -->
+  <section class="section">
+    <h2><b>🎯 Mission</b></h2>
+
+    <div class="memory-container">
+      <div class="memory">
+        <h3>Chat</h3>
+        <p>Tergantung Mood</p>
+      </div>
+
+      <div class="memory">
+        <h3>Call</h3>
+        <p>Telepon sampai ketiduran🌙</p>
+      </div>
+
+      <div class="memory">
+        <h3>Meet and Greet</h3>
+        <p>1x/Minggu🤍</p>
+      </div>
+    </div>
+  </section>
+  <hr>
+<!-- Mood Section -->
+  <section class="section">
+  <h2>😊 Mood Hari Ini</h2>
+  <p>Kasih tau pasangan lagi ngerasa apa 🤍</p>
+
+  <div class="mood-card">
+
+    <div class="mood-buttons">
+
+      <button onclick="setMood('😄', 'Happy')">
+        😄 Happy
+      </button>
+
+      <button onclick="setMood('🥹', 'Kangen')">
+        🥹 Kangen
+      </button>
+
+      <button onclick="setMood('😵', 'Capek')">
+        😵 Capek
+      </button>
+
+      <button onclick="setMood('😔', 'Sedih')">
+        😔 Sedih
+      </button>
+
+      <button onclick="setMood('😡', 'Bad Mood')">
+        😡 Bad Mood
+      </button>
+
+      <button onclick="setMood('😍', 'Excited')">
+        😍 Excited
+      </button>
+
+    </div>
+
+    <div class="current-mood">
+
+      <h3>Mood Hari Ini</h3>
+
+      <div id="moodDisplay">
+        Belum update mood 🤍
+      </div>
+
+      <small id="moodTime"></small>
+
+    </div>
+
+  </div>
+</section>
+  <footer>
+    Made with ❤️ for us
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+</DOCTYPE>
