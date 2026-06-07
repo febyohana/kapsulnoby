@@ -300,9 +300,19 @@ currentMemoryId = id;
   );
 }
 // POP UP MEMORIES CALENDER
+// POP UP MEMORIES CALENDER
+
+let currentMemoryId = null;
+
 window.closeMemoryPopup = function () {
 
   document
+    .getElementById("memoryPopup")
+    .classList.add("hidden");
+
+};
+
+document
   .getElementById("editMemoryBtn")
   .addEventListener("click", () => {
 
@@ -338,7 +348,8 @@ window.closeMemoryPopup = function () {
     );
 
     closeMemoryPopup();
-});
+
+  });
 // ===== MOOD TRACKER =====
 
 loadMood();
