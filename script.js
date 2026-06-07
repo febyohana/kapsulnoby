@@ -1,3 +1,12 @@
+import {
+  db,
+  ref,
+  push,
+  set,
+  onValue,
+  remove
+} from "./firebase.js";
+
 // COUNTDOWN
 const targetDate = new Date("December 1, 2026 00:00:00").getTime();
 
@@ -50,105 +59,9 @@ function showMessage(day) {
     .innerText = messages[day];
 }
 // SECRET CALENDAR
+// SECRET CALENDAR FIREBASE
 
-loadMessages();
-
-function saveMessage() {
-
-  const title =
-    document.getElementById("title").value;
-
-  const message =
-    document.getElementById("message").value;
-
-  const unlockTime =
-    document.getElementById("unlockTime").value;
-
-  if (!title || !message || !unlockTime){
-    alert("Isi semua dulu 🤍");
-    return;
-  }
-
-  const messages =
-    JSON.parse(
-      localStorage.getItem("messages")
-    ) || [];
-
-  messages.push({
-    title,
-    message,
-    unlockTime
-  });
-
-  localStorage.setItem(
-    "messages",
-    JSON.stringify(messages)
-  );
-
-  loadMessages();
-
-  document.getElementById("title").value = "";
-  document.getElementById("message").value = "";
-  document.getElementById("unlockTime").value = "";
-}
-
-function loadMessages(){
-
-  const list =
-    document.getElementById("messagesList");
-
-  const messages =
-    JSON.parse(
-      localStorage.getItem("messages")
-    ) || [];
-
-  list.innerHTML = "";
-
-  messages.forEach((msg)=>{
-
-    const now = new Date();
-    const unlockDate =
-      new Date(msg.unlockTime);
-
-    const unlocked =
-      now >= unlockDate;
-
-    const div =
-      document.createElement("div");
-
-    div.classList.add("message-card");
-
-    if(!unlocked){
-
-      div.classList.add("locked");
-
-      div.innerHTML = `
-        <h3>🔒 ${msg.title}</h3>
-        <p>
-          Dibuka:
-          ${unlockDate.toLocaleString()}
-        </p>
-      `;
-
-    } else {
-
-      div.innerHTML = `
-        <h3>💌 ${msg.title}</h3>
-        <p>${msg.message}</p>
-      `;
-    }
-
-    list.appendChild(div);
-  });
-}
-
-setInterval(loadMessages,1000);
-
-//secret calendar fix
-loadMessages();
-
-/* SAVE MESSAGE */
-function saveMessage() {
+window.saveMessage = function () {
 
   const title =
     document.getElementById("title").value;
@@ -164,219 +77,99 @@ function saveMessage() {
     return;
   }
 
-  const messages =
-    JSON.parse(
-      localStorage.getItem("messages")
-    ) || [];
+  const newRef =
+    push(ref(db, "messages"));
 
-  messages.push({
+  set(newRef, {
     title,
     message,
     unlockTime
   });
 
-  localStorage.setItem(
-    "messages",
-    JSON.stringify(messages)
-  );
-
   document.getElementById("title").value = "";
   document.getElementById("message").value = "";
   document.getElementById("unlockTime").value = "";
+};
 
-  loadMessages();
-}
+window.deleteMessage = function(id){
 
-/* LOAD MESSAGE */
+  if(!confirm("Hapus pesan?"))
+    return;
+
+  remove(
+    ref(db, "messages/" + id)
+  );
+};
+
 function loadMessages() {
 
   const messagesList =
     document.getElementById("messagesList");
 
-  const messages =
-    JSON.parse(
-      localStorage.getItem("messages")
-    ) || [];
+  onValue(
+    ref(db, "messages"),
+    (snapshot) => {
 
-  messagesList.innerHTML = "";
+      messagesList.innerHTML = "";
 
-  messages.forEach((msg, index) => {
+      const data =
+        snapshot.val();
 
-    const unlockDate =
-      new Date(msg.unlockTime);
+      if (!data) return;
 
-    const now = new Date();
+      Object.entries(data)
+      .forEach(([id, msg]) => {
 
-    const unlocked =
-      now >= unlockDate;
+        const unlockDate =
+          new Date(msg.unlockTime);
 
-    const div =
-      document.createElement("div");
+        const unlocked =
+          new Date() >= unlockDate;
 
-    div.classList.add("message-card");
+        const div =
+          document.createElement("div");
 
-    div.innerHTML = `
+        div.classList.add("message-card");
 
-      <div class="message-left">
+        div.innerHTML = `
+          <div class="message-content">
 
-        <div class="message-content">
+            <h3>${msg.title}</h3>
 
-          <h3>${msg.title}</h3>
+            ${
+              unlocked
+              ? `<p>${msg.message}</p>`
+              : `
+                <div class="hidden-message">
+                  🔒 Isi pesan masih terkunci
+                </div>
+              `
+            }
 
-          ${
-            unlocked
-            ? `<p>${msg.message}</p>`
-            : `
-              <div class="hidden-message">
-                🔒 Isi pesan masih terkunci
-              </div>
-            `
-          }
+            <div class="message-date">
+              📅 ${unlockDate.toLocaleString()}
+            </div>
 
-          <div class="message-date">
-            📅 Dibuka:
-            ${unlockDate.toLocaleString()}
+            <button
+              class="delete-btn"
+              onclick="deleteMessage('${id}')"
+            >
+              🗑️
+            </button>
+
           </div>
+        `;
 
-        </div>
+        messagesList.appendChild(div);
 
-      </div>
+      });
 
-      <div class="message-actions">
-
-        <button
-          class="delete-btn"
-          onclick="deleteMessage(${index})"
-        >
-          🗑️
-        </button>
-
-      </div>
-    `;
-
-    messagesList.appendChild(div);
-
-  });
-}
-
-/* DELETE */
-function deleteMessage(index) {
-
-  const confirmDelete =
-    confirm("Yakin mau hapus pesan ini?");
-
-  if(confirmDelete){
-
-    const messages =
-      JSON.parse(
-        localStorage.getItem("messages")
-      ) || [];
-
-    messages.splice(index, 1);
-
-    localStorage.setItem(
-      "messages",
-      JSON.stringify(messages)
-    );
-
-    loadMessages();
-  }
-}
-// FITUR SORTIR PESAN TERJADWAL
-function loadMessages() {
-
-  const messagesList =
-    document.getElementById("messagesList");
-
-  const filterMonth =
-    document.getElementById("filterMonth").value;
-
-  const filterYear =
-    document.getElementById("filterYear").value;
-
-  const messages =
-    JSON.parse(
-      localStorage.getItem("messages")
-    ) || [];
-
-  messagesList.innerHTML = "";
-
-  messages.forEach((msg) => {
-
-    const unlockDate =
-      new Date(msg.unlockTime);
-
-    const msgMonth =
-      unlockDate.getMonth().toString();
-
-    const msgYear =
-      unlockDate.getFullYear().toString();
-
-    /* FILTER */
-    if (
-      (filterMonth !== "" &&
-        filterMonth !== msgMonth)
-      ||
-      (filterYear !== "" &&
-        filterYear !== msgYear)
-    ) {
-      return;
     }
-
-    const now = new Date();
-
-    const unlocked =
-      now >= unlockDate;
-
-    const div =
-      document.createElement("div");
-
-    div.classList.add("message-card");
-
-    div.innerHTML = `
-
-      <div class="message-left">
-
-        <div class="message-content">
-
-          <h3>${msg.title}</h3>
-
-          ${
-            unlocked
-            ? `<p>${msg.message}</p>`
-            : `
-              <div class="hidden-message">
-                🔒 Isi pesan masih terkunci
-              </div>
-            `
-          }
-
-          <div class="message-date">
-            📅 Dibuka:
-            ${unlockDate.toLocaleString()}
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="message-actions">
-
-        <button
-          class="delete-btn"
-          onclick="deleteMessage(this)"
-        >
-          🗑️
-        </button>
-
-      </div>
-    `;
-
-    messagesList.appendChild(div);
-
-  });
-
+  );
 }
+
+loadMessages();
+
 populateYears();
 
 function populateYears() {
