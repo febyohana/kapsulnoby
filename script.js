@@ -4,7 +4,8 @@ import {
   push,
   set,
   onValue,
-  remove
+  remove,
+  update
 } from "./firebase.js";
 
 // COUNTDOWN
