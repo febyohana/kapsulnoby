@@ -28,7 +28,7 @@ setInterval(() => {
 
 
 // LETTER
-function openLetter(type) {
+window.openLetter = function(type) {
   const popup = document.getElementById("letter-popup");
   const text = document.getElementById("letter-text");
 
@@ -42,7 +42,7 @@ function openLetter(type) {
   popup.classList.remove("hidden");
 }
 
-function closePopup() {
+window.closePopup = function() {
   document.getElementById("letter-popup")
     .classList.add("hidden");
 }
@@ -198,7 +198,7 @@ function populateYears() {
 
 loadMemories();
 
-function saveMemory() {
+window.saveMemory = function() {
 
   const date =
     document.getElementById("memoryDate").value;
@@ -327,7 +327,7 @@ ${memory.text}`
 
 loadMood();
 
-function setMood(emoji, mood){
+window.setMood = function(emoji, mood){
 
   const moodData = {
     emoji,
