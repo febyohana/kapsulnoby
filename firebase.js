@@ -5,7 +5,8 @@ import {
   push,
   set,
   onValue,
-  remove
+  remove,
+  update
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -28,5 +29,6 @@ export {
   push,
   set,
   onValue,
-  remove
+  remove,
+  update
 };
