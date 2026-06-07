@@ -1,12 +1,12 @@
 import {
-  db,
+  getDatabase,
   ref,
   push,
   set,
   onValue,
   remove,
   update
-} from "./firebase.js";
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
 
 // COUNTDOWN
 const targetDate = new Date("December 1, 2026 00:00:00").getTime();
