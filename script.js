@@ -30,8 +30,8 @@ setInterval(() => {
 
 // LETTER
 window.openLetter = function(type) {
-  const popup = document.getElementById("letter-popup");
-  const text = document.getElementById("letter-text");
+  const popup = .getElementById("letter-popup");
+  const text = .getElementById("letter-text");
 
   const letters = {
     capek: "Aku tau hari ini berat, tapi kamu hebat banget 🤍",
@@ -44,7 +44,7 @@ window.openLetter = function(type) {
 }
 
 window.closePopup = function() {
-  document.getElementById("letter-popup")
+  .getElementById("letter-popup")
     .classList.add("hidden");
 }
 
@@ -300,8 +300,6 @@ currentMemoryId = id;
   );
 }
 // POP UP MEMORIES CALENDER
-// POP UP MEMORIES CALENDER
-
 let currentMemoryId = null;
 
 window.closeMemoryPopup = function () {
@@ -315,6 +313,13 @@ window.closeMemoryPopup = function () {
 document
   .getElementById("editMemoryBtn")
   .addEventListener("click", () => {
+
+const editBtn =
+  document.getElementById("editMemoryBtn");
+
+if(editBtn){
+
+  editBtn.addEventListener("click", () => {
 
     const newTitle =
       prompt(
@@ -337,10 +342,7 @@ document
     if(newText === null) return;
 
     update(
-      ref(
-        db,
-        "memories/" + currentMemoryId
-      ),
+      ref(db, "memories/" + currentMemoryId),
       {
         title: newTitle,
         text: newText
@@ -350,6 +352,8 @@ document
     closeMemoryPopup();
 
   });
+
+}
 // ===== MOOD TRACKER =====
 
 loadMood();
