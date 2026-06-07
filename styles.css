@@ -699,3 +699,16 @@ body{
     transform:scale(1);
   }
 }
+/*FITUR EDIT MEMORIS CALENDER*/
+.popup-buttons{
+  margin-top:20px;
+}
+
+.edit-btn{
+  background:#ff8fab;
+  color:white;
+  border:none;
+  padding:10px 20px;
+  border-radius:10px;
+  cursor:pointer;
+}
