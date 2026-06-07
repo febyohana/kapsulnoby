@@ -268,15 +268,28 @@ function loadMemories() {
           <p>${formatDate}</p>
         `;
 
-        box.onclick = function () {
+box.onclick = function () {
 
-          alert(
-`${memory.title || "Our Memory"} ❤️
+  document.getElementById(
+    "popupMemoryTitle"
+  ).innerText =
+    memory.title || "Our Memory ❤️";
 
-${memory.text}`
-          );
+  document.getElementById(
+    "popupMemoryDate"
+  ).innerText =
+    formatDate;
 
-        };
+  document.getElementById(
+    "popupMemoryText"
+  ).innerText =
+    memory.text;
+
+  document.getElementById(
+    "memoryPopup"
+  ).classList.remove("hidden");
+
+};
 
         container.appendChild(box);
 
@@ -285,6 +298,14 @@ ${memory.text}`
     }
   );
 }
+// POP UP MEMORIES CALENDER
+window.closeMemoryPopup = function () {
+
+  document
+    .getElementById("memoryPopup")
+    .classList.add("hidden");
+
+};
 // ===== MOOD TRACKER =====
 
 loadMood();
