@@ -1,12 +1,12 @@
 import {
-  getDatabase,
+  db,
   ref,
   push,
   set,
   onValue,
   remove,
   update
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+} from "./firebase.js";
 
 // COUNTDOWN
 const targetDate = new Date("December 1, 2026 00:00:00").getTime();
@@ -393,12 +393,4 @@ function loadMood(){
     `Update terakhir:
     ${mood.time}`;
 }
-export {
-  db,
-  ref,
-  push,
-  set,
-  onValue,
-  remove,
-  update
-};
+
