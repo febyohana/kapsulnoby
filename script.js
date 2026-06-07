@@ -393,3 +393,12 @@ function loadMood(){
     `Update terakhir:
     ${mood.time}`;
 }
+export {
+  db,
+  ref,
+  push,
+  set,
+  onValue,
+  remove,
+  update
+};
