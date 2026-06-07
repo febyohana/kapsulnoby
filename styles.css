@@ -637,3 +637,65 @@ body{
 #moodTime{
   color:gray;
 }
+
+/* MEMORIES CALENDER */
+/* MEMORY POPUP */
+
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+
+.popup.hidden{
+  display:none;
+}
+
+.popup-content{
+  background:#fff;
+  width:90%;
+  max-width:500px;
+  border-radius:20px;
+  padding:25px;
+  text-align:center;
+  position:relative;
+  animation:fadeIn .25s ease;
+}
+
+.popup-content h2{
+  color:#ff7ea5;
+  margin-bottom:10px;
+}
+
+.popup-content p{
+  color:#666;
+  margin-bottom:15px;
+}
+
+#popupMemoryText{
+  white-space:pre-line;
+  line-height:1.7;
+}
+
+.close{
+  position:absolute;
+  right:15px;
+  top:10px;
+  font-size:28px;
+  cursor:pointer;
+}
+
+@keyframes fadeIn{
+  from{
+    opacity:0;
+    transform:scale(.9);
+  }
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
