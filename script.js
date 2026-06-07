@@ -194,11 +194,11 @@ function populateYears() {
   }
 
 }
-// MEMORY CALENDAR
+// MEMORY CALENDAR FIREBASE
 
 loadMemories();
 
-window.saveMemory = function() {
+window.saveMemory = function () {
 
   const date =
     document.getElementById("memoryDate").value;
@@ -214,115 +214,77 @@ window.saveMemory = function() {
     return;
   }
 
-  const memories =
-    JSON.parse(
-      localStorage.getItem("memories")
-    ) || [];
+  const newRef =
+    push(ref(db, "memories"));
 
-  memories.push({
+  set(newRef, {
     date,
     title,
     text
   });
 
-  localStorage.setItem(
-    "memories",
-    JSON.stringify(memories)
-  );
+  document.getElementById("memoryDate").value = "";
+  document.getElementById("memoryTitle").value = "";
+  document.getElementById("memoryText").value = "";
+};
 
-  loadMemories();
-
-  document.getElementById(
-    "memoryDate"
-  ).value = "";
-
-  document.getElementById(
-    "memoryTitle"
-  ).value = "";
-
-  document.getElementById(
-    "memoryText"
-  ).value = "";
-
-  function deleteMemory(index){
-
-  const confirmDelete =
-    confirm(
-      "Hapus kenangan ini? 🥺"
-    );
-
-  if(!confirmDelete) return;
-
-  const memories =
-    JSON.parse(
-      localStorage.getItem(
-        "memories"
-      )
-    ) || [];
-
-  memories.splice(index, 1);
-
-  localStorage.setItem(
-    "memories",
-    JSON.stringify(memories)
-  );
-
-  loadMemories();
-}
-}
-// Fitur simpan pesan Memories Calender
 function loadMemories() {
 
   const container =
-    document.getElementById(
-      "memoryCalendar"
-    );
+    document.getElementById("memoryCalendar");
 
-  const memories =
-    JSON.parse(
-      localStorage.getItem("memories")
-    ) || [];
+  onValue(
+    ref(db, "memories"),
+    (snapshot) => {
 
-  container.innerHTML = "";
+      container.innerHTML = "";
 
-  memories.forEach((memory) => {
+      const data =
+        snapshot.val();
 
-    const box =
-      document.createElement("div");
+      if (!data) return;
 
-    box.classList.add(
-      "memory-box"
-    );
+      Object.entries(data)
+      .forEach(([id, memory]) => {
 
-    const formatDate =
-      new Date(memory.date)
-      .toLocaleDateString(
-        "id-ID",
-        {
-          day:"numeric",
-          month:"long",
-          year:"numeric"
-        }
-      );
+        const box =
+          document.createElement("div");
 
-    box.innerHTML = `
-      <h3>📅</h3>
-      <p>${formatDate}</p>
-    `;
+        box.classList.add("memory-box");
 
-    box.onclick = function() {
+        const formatDate =
+          new Date(memory.date)
+          .toLocaleDateString(
+            "id-ID",
+            {
+              day: "numeric",
+              month: "long",
+              year: "numeric"
+            }
+          );
 
-      alert(
+        box.innerHTML = `
+          <h3>📅</h3>
+          <p>${formatDate}</p>
+        `;
+
+        box.onclick = function () {
+
+          alert(
 `${memory.title || "Our Memory"} ❤️
 
 ${memory.text}`
-      );
-    };
+          );
 
-    container.appendChild(box);
-  });
+        };
+
+        container.appendChild(box);
+
+      });
+
+    }
+  );
 }
-// mood tracker
 // ===== MOOD TRACKER =====
 
 loadMood();
