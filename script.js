@@ -269,7 +269,7 @@ function loadMemories() {
         `;
 
 box.onclick = function () {
-
+currentMemoryId = id;
   document.getElementById(
     "popupMemoryTitle"
   ).innerText =
@@ -302,10 +302,42 @@ box.onclick = function () {
 window.closeMemoryPopup = function () {
 
   document
-    .getElementById("memoryPopup")
-    .classList.add("hidden");
+  .getElementById("editMemoryBtn")
+  .addEventListener("click", () => {
 
-};
+    const newTitle =
+      prompt(
+        "Judul baru:",
+        document.getElementById(
+          "popupMemoryTitle"
+        ).innerText
+      );
+
+    if(newTitle === null) return;
+
+    const newText =
+      prompt(
+        "Isi kenangan baru:",
+        document.getElementById(
+          "popupMemoryText"
+        ).innerText
+      );
+
+    if(newText === null) return;
+
+    update(
+      ref(
+        db,
+        "memories/" + currentMemoryId
+      ),
+      {
+        title: newTitle,
+        text: newText
+      }
+    );
+
+    closeMemoryPopup();
+});
 // ===== MOOD TRACKER =====
 
 loadMood();
