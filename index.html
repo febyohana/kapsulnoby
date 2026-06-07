@@ -92,6 +92,21 @@
 
 </section>
 <hr>
+  <div class="filter-box">
+
+  <select id="memoryFilterMonth">
+    <option value="">Semua Bulan</option>
+    <option value="0">Januari</option>
+    <option value="1">Februari</option>
+    ...
+    <option value="11">Desember</option>
+  </select>
+
+  <select id="memoryFilterYear">
+    <option value="">Semua Tahun</option>
+  </select>
+
+</div>
   <!-- Secret Calendar -->
   <section class="section">
       <h2><b>📆 Secret Calendar</b></h2>
@@ -243,6 +258,27 @@
 
   </div>
 </section>
+  
+  <!-- MEMORY POPUP -->
+<div id="memoryPopup" class="popup hidden">
+
+  <div class="popup-content">
+
+    <span
+      class="close"
+      onclick="closeMemoryPopup()">
+      &times;
+    </span>
+
+    <h2 id="popupMemoryTitle"></h2>
+
+    <p id="popupMemoryDate"></p>
+
+    <div id="popupMemoryText"></div>
+
+  </div>
+
+</div>
   <footer>
     Made with ❤️ for us
   </footer>
