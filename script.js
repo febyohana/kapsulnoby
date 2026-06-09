@@ -30,8 +30,15 @@ setInterval(() => {
 
 // LETTER
 window.openLetter = function(type) {
-  const popup = document.getElementById("letter-popup");
-  const text = document.getElementById("letter-text");
+const popup =
+document.getElementById(
+  "letter-popup"
+);
+
+const text =
+document.getElementById(
+  "letter-text"
+);
 
   const letters = {
     capek: "Aku tau hari ini berat, tapi kamu hebat banget 🤍",
@@ -44,7 +51,7 @@ window.openLetter = function(type) {
 }
 
 window.closePopup = function() {
-  .getElementById("letter-popup")
+  document.getElementById("letter-popup")
     .classList.add("hidden");
 }
 
