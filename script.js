@@ -30,8 +30,8 @@ setInterval(() => {
 
 // LETTER
 window.openLetter = function(type) {
-  const popup = .getElementById("letter-popup");
-  const text = .getElementById("letter-text");
+  const popup = document.getElementById("letter-popup");
+  const text = document.getElementById("letter-text");
 
   const letters = {
     capek: "Aku tau hari ini berat, tapi kamu hebat banget 🤍",
