@@ -8,136 +8,236 @@ import {
   update
 } from "./firebase.js";
 
+// ====================
 // COUNTDOWN
-const targetDate = new Date("December 1, 2026 00:00:00").getTime();
+// ====================
+
+const targetDate =
+new Date(
+  "December 1, 2026 00:00:00"
+).getTime();
 
 setInterval(() => {
-  const now = new Date().getTime();
-  const distance = targetDate - now;
 
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(
-    (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  );
-  const mins = Math.floor(
-    (distance % (1000 * 60 * 60)) / (1000 * 60)
+  const now =
+  new Date().getTime();
+
+  const distance =
+  targetDate - now;
+
+  const days =
+  Math.floor(
+    distance /
+    (1000 * 60 * 60 * 24)
   );
 
-  document.getElementById("countdown").innerHTML =
-    `${days} hari ${hours} jam ${mins} menit`;
+  const hours =
+  Math.floor(
+    (
+      distance %
+      (1000 * 60 * 60 * 24)
+    ) /
+    (1000 * 60 * 60)
+  );
+
+  const mins =
+  Math.floor(
+    (
+      distance %
+      (1000 * 60 * 60)
+    ) /
+    (1000 * 60)
+  );
+
+  const countdown =
+  document.getElementById(
+    "countdown"
+  );
+
+  if(countdown){
+    countdown.innerHTML =
+    `${days} hari
+     ${hours} jam
+     ${mins} menit`;
+  }
+
 }, 1000);
 
 
+// ====================
 // LETTER
-window.openLetter = function(type) {
-const popup =
-document.getElementById(
-  "letter-popup"
-);
+// ====================
 
-const text =
-document.getElementById(
-  "letter-text"
-);
+window.openLetter =
+function(type){
+
+  const popup =
+  document.getElementById(
+    "letter-popup"
+  );
+
+  const text =
+  document.getElementById(
+    "letter-text"
+  );
 
   const letters = {
-    capek: "Aku tau hari ini berat, tapi kamu hebat banget 🤍",
-    kangen: "Kalau lagi kangen, inget ya aku juga selalu mikirin kamu 🌙",
-    sedih: "Gapapa nangis dulu, aku tetap di sini buat kamu ❤️"
+    capek:
+    "Aku tau hari ini berat, tapi kamu hebat banget 🤍",
+
+    kangen:
+    "Kalau lagi kangen, inget ya aku juga selalu mikirin kamu 🌙",
+
+    sedih:
+    "Gapapa nangis dulu, aku tetap di sini buat kamu ❤️"
   };
 
-  text.innerText = letters[type];
-  popup.classList.remove("hidden");
-}
+  text.innerText =
+  letters[type];
 
-window.closePopup = function() {
-  document.getElementById("letter-popup")
-    .classList.add("hidden");
-}
+  popup.classList.remove(
+    "hidden"
+  );
+};
 
-// CALENDAR
-function showMessage(day) {
-  const messages = {
-    25: "Semoga hari ini kamu bahagia 🤍",
-    30: "Jangan lupa makan yaaa 🥹",
-    10: "10 Juni: Special surprise for you 🎁"
-  };
+window.closePopup =
+function(){
 
-  document.getElementById("calendar-message")
-    .innerText = messages[day];
-}
+  document
+    .getElementById(
+      "letter-popup"
+    )
+    .classList.add(
+      "hidden"
+    );
+};
+
+
+// ====================
 // SECRET CALENDAR
-// SECRET CALENDAR FIREBASE
+// ====================
 
-window.saveMessage = function () {
+window.saveMessage =
+function(){
 
   const title =
-    document.getElementById("title").value;
+  document
+  .getElementById(
+    "title"
+  ).value;
 
   const message =
-    document.getElementById("message").value;
+  document
+  .getElementById(
+    "message"
+  ).value;
 
   const unlockTime =
-    document.getElementById("unlockTime").value;
+  document
+  .getElementById(
+    "unlockTime"
+  ).value;
 
-  if (!title || !message || !unlockTime) {
-    alert("Isi semua dulu 🤍");
+  if(
+    !title ||
+    !message ||
+    !unlockTime
+  ){
+    alert(
+      "Isi semua dulu 🤍"
+    );
     return;
   }
 
   const newRef =
-    push(ref(db, "messages"));
+  push(
+    ref(
+      db,
+      "messages"
+    )
+  );
 
-  set(newRef, {
+  set(newRef,{
     title,
     message,
     unlockTime
   });
 
-  document.getElementById("title").value = "";
-  document.getElementById("message").value = "";
-  document.getElementById("unlockTime").value = "";
+  document.getElementById(
+    "title"
+  ).value = "";
+
+  document.getElementById(
+    "message"
+  ).value = "";
+
+  document.getElementById(
+    "unlockTime"
+  ).value = "";
 };
 
-window.deleteMessage = function(id){
 
-  if(!confirm("Hapus pesan?"))
-    return;
+window.deleteMessage =
+function(id){
+
+  if(
+    !confirm(
+      "Hapus pesan?"
+    )
+  ) return;
 
   remove(
-    ref(db, "messages/" + id)
+    ref(
+      db,
+      "messages/" + id
+    )
   );
 };
 
-function loadMessages() {
+
+function loadMessages(){
 
   const messagesList =
-    document.getElementById("messagesList");
+  document.getElementById(
+    "messagesList"
+  );
+
+  if(!messagesList)
+    return;
 
   onValue(
-    ref(db, "messages"),
-    (snapshot) => {
+    ref(db,"messages"),
+    (snapshot)=>{
 
-      messagesList.innerHTML = "";
+      messagesList.innerHTML =
+      "";
 
       const data =
-        snapshot.val();
+      snapshot.val();
 
-      if (!data) return;
+      if(!data) return;
 
       Object.entries(data)
-      .forEach(([id, msg]) => {
+      .forEach(
+        ([id,msg])=>{
 
         const unlockDate =
-          new Date(msg.unlockTime);
+        new Date(
+          msg.unlockTime
+        );
 
         const unlocked =
-          new Date() >= unlockDate;
+        new Date() >=
+        unlockDate;
 
         const div =
-          document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
-        div.classList.add("message-card");
+        div.classList.add(
+          "message-card"
+        );
 
         div.innerHTML = `
           <div class="message-content">
@@ -148,27 +248,29 @@ function loadMessages() {
               unlocked
               ? `<p>${msg.message}</p>`
               : `
-                <div class="hidden-message">
-                  🔒 Isi pesan masih terkunci
-                </div>
+              <div class="hidden-message">
+              🔒 Isi pesan masih terkunci
+              </div>
               `
             }
 
             <div class="message-date">
-              📅 ${unlockDate.toLocaleString()}
+            📅
+            ${unlockDate.toLocaleString("id-ID")}
             </div>
 
             <button
-              class="delete-btn"
-              onclick="deleteMessage('${id}')"
-            >
-              🗑️
+            class="delete-btn"
+            onclick="deleteMessage('${id}')">
+            🗑️
             </button>
 
           </div>
         `;
 
-        messagesList.appendChild(div);
+        messagesList.appendChild(
+          div
+        );
 
       });
 
@@ -178,230 +280,247 @@ function loadMessages() {
 
 loadMessages();
 
+
+// ====================
+// FILTER YEAR
+// ====================
+
 populateYears();
 
-function populateYears() {
+function populateYears(){
 
-  const filterYear =
-    document.getElementById("filterYear");
+  const selects = [
+
+    document.getElementById(
+      "filterYear"
+    ),
+
+    document.getElementById(
+      "memoryFilterYear"
+    )
+
+  ];
 
   const currentYear =
-    new Date().getFullYear();
+  new Date()
+  .getFullYear();
 
-  for(let year = 2024;
-      year <= currentYear + 5;
-      year++) {
+  selects.forEach(
+    (select)=>{
 
-    const option =
-      document.createElement("option");
+    if(!select)
+      return;
 
-    option.value = year;
-    option.textContent = year;
+    for(
+      let year = 2024;
+      year <=
+      currentYear + 5;
+      year++
+    ){
 
-    filterYear.appendChild(option);
-  }
+      const option =
+      document.createElement(
+        "option"
+      );
+
+      option.value =
+      year;
+
+      option.textContent =
+      year;
+
+      select.appendChild(
+        option
+      );
+    }
+
+  });
 
 }
-// MEMORY CALENDAR FIREBASE
+
+
+// ====================
+// MEMORIES
+// ====================
 
 loadMemories();
 
-window.saveMemory = function () {
+window.saveMemory =
+function(){
 
   const date =
-    document.getElementById("memoryDate").value;
+  document.getElementById(
+    "memoryDate"
+  ).value;
 
   const title =
-    document.getElementById("memoryTitle").value;
+  document.getElementById(
+    "memoryTitle"
+  ).value;
 
   const text =
-    document.getElementById("memoryText").value;
+  document.getElementById(
+    "memoryText"
+  ).value;
 
-  if (!date || !text) {
-    alert("Isi dulu kenangannya 🤍");
+  if(
+    !date ||
+    !text
+  ){
+    alert(
+      "Isi dulu kenangannya 🤍"
+    );
     return;
   }
 
   const newRef =
-    push(ref(db, "memories"));
+  push(
+    ref(
+      db,
+      "memories"
+    )
+  );
 
-  set(newRef, {
+  set(newRef,{
     date,
     title,
     text
   });
 
-  document.getElementById("memoryDate").value = "";
-  document.getElementById("memoryTitle").value = "";
-  document.getElementById("memoryText").value = "";
+  document.getElementById(
+    "memoryDate"
+  ).value = "";
+
+  document.getElementById(
+    "memoryTitle"
+  ).value = "";
+
+  document.getElementById(
+    "memoryText"
+  ).value = "";
 };
 
-function loadMemories() {
+
+function loadMemories(){
 
   const container =
-    document.getElementById("memoryCalendar");
+  document.getElementById(
+    "memoryCalendar"
+  );
+
+  if(!container)
+    return;
 
   onValue(
-    ref(db, "memories"),
-    (snapshot) => {
+    ref(db,"memories"),
+    (snapshot)=>{
 
-      container.innerHTML = "";
+      container.innerHTML =
+      "";
 
       const data =
-        snapshot.val();
+      snapshot.val();
 
-      if (!data) return;
+      if(!data) return;
 
       Object.entries(data)
-      .forEach(([id, memory]) => {
+      .forEach(
+        ([id,memory])=>{
 
         const box =
-          document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
-        box.classList.add("memory-box");
+        box.classList.add(
+          "memory-box"
+        );
 
         const formatDate =
-          new Date(memory.date)
-          .toLocaleDateString(
-            "id-ID",
-            {
-              day: "numeric",
-              month: "long",
-              year: "numeric"
-            }
-          );
+        new Date(
+          memory.date
+        )
+        .toLocaleDateString(
+          "id-ID",
+          {
+            day:"numeric",
+            month:"long",
+            year:"numeric"
+          }
+        );
 
         box.innerHTML = `
           <h3>📅</h3>
           <p>${formatDate}</p>
         `;
 
-box.onclick = function () {
-currentMemoryId = id;
-  document.getElementById(
-    "popupMemoryTitle"
-  ).innerText =
-    memory.title || "Our Memory ❤️";
-
-  document.getElementById(
-    "popupMemoryDate"
-  ).innerText =
-    formatDate;
-
-  document.getElementById(
-    "popupMemoryText"
-  ).innerText =
-    memory.text;
-
-  document.getElementById(
-    "memoryPopup"
-  ).classList.remove("hidden");
-
-};
-
-        container.appendChild(box);
+        container.appendChild(
+          box
+        );
 
       });
 
     }
   );
 }
-// POP UP MEMORIES CALENDER
-let currentMemoryId = null;
 
-window.closeMemoryPopup = function () {
 
-  document
-    .getElementById("memoryPopup")
-    .classList.add("hidden");
-
-};
-
-document
-  .getElementById("editMemoryBtn")
-  .addEventListener("click", () => {
-
-const editBtn =
-  document.getElementById("editMemoryBtn");
-
-if(editBtn){
-
-  editBtn.addEventListener("click", () => {
-
-    const newTitle =
-      prompt(
-        "Judul baru:",
-        document.getElementById(
-          "popupMemoryTitle"
-        ).innerText
-      );
-
-    if(newTitle === null) return;
-
-    const newText =
-      prompt(
-        "Isi kenangan baru:",
-        document.getElementById(
-          "popupMemoryText"
-        ).innerText
-      );
-
-    if(newText === null) return;
-
-    update(
-      ref(db, "memories/" + currentMemoryId),
-      {
-        title: newTitle,
-        text: newText
-      }
-    );
-
-    closeMemoryPopup();
-
-  });
-
-}
-// ===== MOOD TRACKER =====
+// ====================
+// MOOD TRACKER
+// ====================
 
 loadMood();
 
-window.setMood = function(emoji, mood){
+window.setMood =
+function(
+emoji,
+mood
+){
 
   const moodData = {
     emoji,
     mood,
-    time: new Date()
-      .toLocaleString("id-ID")
+    time:
+    new Date()
+    .toLocaleString(
+      "id-ID"
+    )
   };
 
   localStorage.setItem(
     "dailyMood",
-    JSON.stringify(moodData)
+    JSON.stringify(
+      moodData
+    )
   );
 
   loadMood();
-}
+};
+
 
 function loadMood(){
 
   const mood =
-    JSON.parse(
-      localStorage.getItem(
-        "dailyMood"
-      )
-    );
+  JSON.parse(
+    localStorage.getItem(
+      "dailyMood"
+    )
+  );
 
-  if(!mood) return;
+  if(!mood)
+    return;
 
-  document.getElementById(
+  document
+  .getElementById(
     "moodDisplay"
   ).innerHTML =
-    `${mood.emoji} ${mood.mood}`;
+  `${mood.emoji}
+   ${mood.mood}`;
 
-  document.getElementById(
+  document
+  .getElementById(
     "moodTime"
   ).innerHTML =
-    `Update terakhir:
-    ${mood.time}`;
+  `Update terakhir:
+  ${mood.time}`;
 }
-
