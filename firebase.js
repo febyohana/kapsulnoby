@@ -1,3 +1,6 @@
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
 import {
   getDatabase,
   ref,
@@ -6,21 +9,37 @@ import {
   onValue,
   remove,
   update
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+}
+from
+"https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCjOUZ5NciV-5Sy0jPJL0fS2aRfWC33big",
-  authDomain: "kapsul-noby.firebaseapp.com",
-  databaseURL: "https://kapsul-noby-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "kapsul-noby",
-  storageBucket: "kapsul-noby.firebasestorage.app",
-  messagingSenderId: "1857912792",
-  appId: "1:1857912792:web:d37a28a824edbc1325bcad",
-  measurementId: "G-M3QDHPM2E7"
+  apiKey: "AIzaSyDsXqYKA1J-rc8-kVuk8tDyn0zivv0JhY8",
+
+  authDomain:
+  "kapsul-noby-2.firebaseapp.com",
+
+  databaseURL:
+  "https://kapsul-noby-2-default-rtdb.asia-southeast1.firebasedatabase.app/",
+
+  projectId:
+  "kapsul-noby-2",
+
+  storageBucket:
+  "kapsul-noby-2.firebasestorage.app",
+
+  messagingSenderId:
+  "27443990706",
+
+  appId:
+  "1:27443990706:web:9cb5661f043988964f39ab"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getDatabase(app);
 
 export {
   db,
